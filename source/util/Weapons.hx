@@ -15,11 +15,11 @@ class Weapons extends FlxGroup
 	var bLSR:FlxSprite;
 	var bHNG:FlxSprite;
 	
-	public var rW:Int = -1;
-	public var bW:Int = -1;
+	public var rW:Int = 0;
+	public var bW:Int = 0;
 	
 	public var rP:Int = 0;
-	public var bP:Int = 0;
+	public var bP:Int = 1;
 	
 	public function new() 
 	{
@@ -92,9 +92,9 @@ class Weapons extends FlxGroup
 			bHNG.animation.frameIndex = 8;
 			switch(WEAPON)
 			{
-				case 0: bRPD.animation.frameIndex += rP + 1;
-				case 1: bLSR.animation.frameIndex += rP + 1;
-				case 2: bHNG.animation.frameIndex += rP + 1;
+				case 0: bRPD.animation.frameIndex += bP + 1;
+				case 1: bLSR.animation.frameIndex += bP + 1;
+				case 2: bHNG.animation.frameIndex += bP + 1;
 			}
 		}
 	}

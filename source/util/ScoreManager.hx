@@ -14,4 +14,14 @@ class ScoreManager
 		
 	}
 	
+	public function points(P:Int):Void
+	{
+		score += P;
+	}
+	
+	public function volley():Void
+	{
+		volleys++;
+	}
+	
 }

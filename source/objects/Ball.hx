@@ -5,6 +5,9 @@ import flixel.FlxSprite;
 import flixel.math.FlxPoint;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
+import flixel.util.FlxTimer;
+import fx.Explode;
+import fx.Spark;
 import states.PlayState;
 import util.ZMath;
 /**
@@ -16,7 +19,7 @@ class Ball extends FlxSprite
 	var trail1:FlxSprite;
 	var trail2:FlxSprite;
 	var trailDistance:Int = 7;
-	var startSpeed:Float = 60;
+	var startSpeed:Float = 50;
 	
 	var red:Bool = true;
 	
@@ -54,6 +57,7 @@ class Ball extends FlxSprite
 		animate();
 		positionTrail();
 		bumpOffWalls();
+		checkIfFallen();
 		
 		super.update(elapsed);
 		
@@ -116,11 +120,37 @@ class Ball extends FlxSprite
 	function bounceOffShip(b:Ball, p:FlxObject):Void
 	{
 		bounce();
-		PlayState.instance.score.volleys++;
-		PlayState.instance.score.score += 150;
+		PlayState.instance.score.volley();
+		//PlayState.instance.score.score += 150;
+		
+		var sprk:Spark = new Spark(FlxPoint.get(b.getMidpoint().x, b.y + b.height));
+		
 		var a = ZMath.clamp(270 + (b.getMidpoint().x - p.getMidpoint().x) * 4 + PlayState.instance.ship.velocity.x * 0.4, 180 + 45, 360 - 45);
 		var v = ZMath.velocityFromAngle(a, oldVel);
 		b.velocity.set(v.x, v.y);
+		PlayState.instance.ship.velocity.y = 150;
+	}
+	
+	function checkIfFallen():Void
+	{
+		if (y > FlxG.height)
+		{
+			PlayState.instance.ship.kill();
+		}
+	}
+	
+	override public function kill():Void 
+	{
+		var e = new Explode(getMidpoint());
+		new FlxTimer().start(0.2).onComplete = function(t:FlxTimer):Void { 
+			var e = new Explode(trail1.getMidpoint());
+			trail1.kill();
+		}
+		new FlxTimer().start(0.4).onComplete = function(t:FlxTimer):Void { 
+			var e = new Explode(trail2.getMidpoint());
+			trail2.kill();
+		}
+		super.kill();
 	}
 	
 	function bounce():Void

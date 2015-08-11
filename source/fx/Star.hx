@@ -16,12 +16,12 @@ class Star extends FlxSprite
 		if (Math.random() > 0.5)
 		{
 			makeGraphic(1, 1, Colors.KCMW[3]);
-			velocity.y = Math.random() * 10 + 40;
+			velocity.y = Math.random() * 10 + 50;
 		}
 		else
 		{
 			makeGraphic(2, 2, Colors.KCMW[3]);
-			velocity.y = Math.random() * 20 + 60;
+			velocity.y = Math.random() * 20 + 100;
 		}
 	}
 	

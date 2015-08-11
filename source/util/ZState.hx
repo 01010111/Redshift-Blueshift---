@@ -38,7 +38,9 @@ class ZState extends FlxState
 	override public function draw():Void
 	{
 		super.draw();
+		#if !debug
 		if (colors != null) paletteMap();
+		#end
 	}
 	
 	var colorPalette:Array<Array<Int>>;

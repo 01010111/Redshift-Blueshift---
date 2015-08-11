@@ -4,8 +4,12 @@ import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.math.FlxPoint;
 import flixel.util.FlxAxes;
+import flixel.util.FlxTimer;
+import fx.Explode;
+import states.GameOver;
 import states.PlayState;
 import util.Controls;
+import util.ZMath;
 
 /**
  * ...
@@ -16,10 +20,10 @@ class Ship extends FlxSprite
 	public var paddle:FlxObject;
 	
 	var animationSpeed:Int = 35;
-	var minSpeed:Int = 120;
-	var maxSpeed:Int = 150;
+	var minSpeed:Int = 150;
+	var maxSpeed:Int = 175;
 	var dragAmt:Int = 1200;
-	var accelAmt:Int = 1200;
+	var accelAmt:Int = 1800;
 	
 	public function new() 
 	{
@@ -42,8 +46,8 @@ class Ship extends FlxSprite
 		animation.add("b_paddle_to_r_paddle", [33, 34, 35, 36, 37, 38, 39, 8, 9, 10, 11, 12], animationSpeed, false);
 		animation.add("b_paddle_to_b_guns", [33, 34, 35, 20, 21, 22, 23, 24], animationSpeed, false);
 		animation.frameIndex = 12;
-		setSize(7, 6);
-		offset.set(9, 9);
+		setSize(3, 2);
+		offset.set(11, 11);
 		screenCenter(FlxAxes.X);
 		drag.set(dragAmt, dragAmt);
 		
@@ -60,14 +64,22 @@ class Ship extends FlxSprite
 	
 	override public function update(elapsed:Float):Void 
 	{
-		shooting = Reg.c.pressed(Controls.BTN_A);
-		red = PlayState.instance.red;
-		move();
-		bounds();
-		animate();
-		
-		positionPaddle();
-		
+		if (alive)
+		{
+			shooting = Reg.c.pressed(Controls.BTN_A);
+			red = PlayState.instance.red;
+			move();
+			bounds();
+			animate();
+			positionPaddle();
+			checkShooting();
+		}
+		else 
+		{
+			velocity.set();
+			acceleration.set();
+			shooting = false;
+		}
 		super.update(elapsed);
 	}
 	
@@ -96,7 +108,7 @@ class Ship extends FlxSprite
 		{
 			if (red)
 			{
-				if (shooting && animation.frameIndex != 24)
+				if (shooting && animation.frameIndex != 4)
 				{
 					switch(animation.frameIndex)
 					{
@@ -119,7 +131,7 @@ class Ship extends FlxSprite
 			}
 			else
 			{
-				if (shooting && animation.frameIndex != 4)
+				if (shooting && animation.frameIndex != 24)
 				{
 					switch(animation.frameIndex)
 					{
@@ -145,7 +157,126 @@ class Ship extends FlxSprite
 	
 	function positionPaddle():Void
 	{
-		paddle.setPosition(x - 9, y - 4);
+		paddle.setPosition(x - 11, y - 6);
+	}
+	
+	var timer:Int = 0;
+	
+	function checkShooting():Void
+	{
+		if (animation.frameIndex == 4)
+		{
+			switch(PlayState.instance.weaponUI.rW)
+			{
+				case 0: rapidFire(true);
+				case 1: rapidFire(true);
+				case 2: rapidFire(true);
+			}
+		}
+		if (animation.frameIndex == 24)
+		{
+			switch(PlayState.instance.weaponUI.bW)
+			{
+				case 0: rapidFire(false);
+				case 1: rapidFire(false);
+				case 2: rapidFire(false);
+			}
+		}
+	}
+	
+	function rapidFire(RED:Bool):Void
+	{
+		if (RED)
+		{
+			switch(PlayState.instance.weaponUI.rP)
+			{
+				case 0:
+					if (timer == 0)
+					{
+						var b = new ShipBullet(FlxPoint.get(getMidpoint().x, y - 2), FlxPoint.get(ZMath.randomRange( -10, 10), -400));
+						timer = 8;
+					}
+					else timer--;
+				case 1:
+					if (timer == 0)
+					{
+						var b = new ShipBullet(FlxPoint.get(getMidpoint().x - 4, y - 2), FlxPoint.get(0, -400));
+						var b = new ShipBullet(FlxPoint.get(getMidpoint().x + 4, y - 2), FlxPoint.get(0, -400));
+						timer = 6;
+					}
+					else timer--;
+				case 2:
+					if (timer == 0)
+					{
+						var b = new ShipBullet(FlxPoint.get(getMidpoint().x, y - 2), 	 FlxPoint.get(0, -400));
+						var b = new ShipBullet(FlxPoint.get(getMidpoint().x + 7, y + 2), FlxPoint.get(0, -400));
+						var b = new ShipBullet(FlxPoint.get(getMidpoint().x - 7, y + 2), FlxPoint.get(0, -400));
+						timer = 6;
+					}
+					else timer--;
+			}
+		}
+		else
+		{
+			switch(PlayState.instance.weaponUI.bP)
+			{
+				case 0:
+					if (timer == 0)
+					{
+						var b = new ShipBullet(FlxPoint.get(getMidpoint().x, y - 2), FlxPoint.get(ZMath.randomRange( -10, 10), -400));
+						timer = 8;
+					}
+					else timer--;
+				case 1:
+					if (timer == 0)
+					{
+						var b = new ShipBullet(FlxPoint.get(getMidpoint().x - 4, y - 2), FlxPoint.get(0, -400));
+						var b = new ShipBullet(FlxPoint.get(getMidpoint().x + 4, y - 2), FlxPoint.get(0, -400));
+						timer = 6;
+					}
+					else timer--;
+				case 2:
+					if (timer == 0)
+					{
+						var b = new ShipBullet(FlxPoint.get(getMidpoint().x, y - 2), 	 FlxPoint.get(0, -400));
+						var b = new ShipBullet(FlxPoint.get(getMidpoint().x + 7, y + 2), FlxPoint.get(0, -400));
+						var b = new ShipBullet(FlxPoint.get(getMidpoint().x - 7, y + 2), FlxPoint.get(0, -400));
+						timer = 6;
+					}
+					else timer--;
+			}
+		}
+	}
+	
+	function laserFire(RED:Bool):Void
+	{
+		
+	}
+	
+	function misssileFire(RED:Bool):Void
+	{
+		
+	}
+	
+	override public function kill():Void 
+	{
+		if (alive)
+		{
+			alive = false;
+			PlayState.instance.ball.kill();
+			for (i in 0...15)
+			{
+				new FlxTimer().start(0.1 * i).onComplete = function(t:FlxTimer):Void
+				{
+					var m = getMidpoint();
+					var e:Explode = new Explode(FlxPoint.get(m.x + ZMath.randomRange( -12, 12), m.y + ZMath.randomRange( -12, 12)), true);
+				}
+			}
+			new FlxTimer().start(1.5).onComplete = function(t:FlxTimer):Void 
+			{
+				PlayState.instance.openSubState(new GameOver(getMidpoint()));
+			}
+		}
 	}
 	
 }
