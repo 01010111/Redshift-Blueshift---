@@ -11,5 +11,5 @@ import util.ScoreManager;
 class Reg
 {
 	public static var c:Controls;
-	public static var scheme:Int = 4;
+	public static var scheme:Int = 2;
 }

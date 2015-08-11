@@ -19,7 +19,7 @@ class Ship extends FlxSprite
 	var minSpeed:Int = 120;
 	var maxSpeed:Int = 150;
 	var dragAmt:Int = 1200;
-	var accelAmt:Int = 1000;
+	var accelAmt:Int = 1200;
 	
 	public function new() 
 	{
