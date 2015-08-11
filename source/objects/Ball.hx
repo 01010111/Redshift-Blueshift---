@@ -108,7 +108,7 @@ class Ball extends FlxSprite
 			oldVel = ZMath.vectorVelocity(velocity.x, velocity.y);
 			if (ZMath.isWithinBounds(PlayState.instance.ship.animation.frameIndex, 9, 14) || ZMath.isWithinBounds(PlayState.instance.ship.animation.frameIndex, 29, 34))
 			{
-				FlxG.overlap(this, PlayState.instance.ship.paddle, bounceOffShip);
+				FlxG.collide(this, PlayState.instance.ship.paddle, bounceOffShip);
 			}
 		}
 	}
@@ -117,6 +117,7 @@ class Ball extends FlxSprite
 	{
 		bounce();
 		PlayState.instance.score.volleys++;
+		PlayState.instance.score.score += 150;
 		var a = ZMath.clamp(270 + (b.getMidpoint().x - p.getMidpoint().x) * 4 + PlayState.instance.ship.velocity.x * 0.4, 180 + 45, 360 - 45);
 		var v = ZMath.velocityFromAngle(a, oldVel);
 		b.velocity.set(v.x, v.y);

@@ -47,8 +47,9 @@ class Ship extends FlxSprite
 		screenCenter(FlxAxes.X);
 		drag.set(dragAmt, dragAmt);
 		
-		paddle = new FlxObject(0, 0, 25, 1);
+		paddle = new FlxObject(0, 0, 25, 8);
 		paddle.allowCollisions = FlxObject.UP;
+		paddle.immovable = true;
 		
 		PlayState.instance.add(this);
 		PlayState.instance.add(paddle);
