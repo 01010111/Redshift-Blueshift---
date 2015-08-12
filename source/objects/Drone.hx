@@ -24,7 +24,7 @@ class Drone extends FlxSprite
 		super();
 		loadGraphic("assets/images/drone.png", true, 21, 21);
 		setPosition(ZMath.randomRange(0, FlxG.width - 21), -21);
-		animation.add("hurt", [0, 8, 1, 9, 2, 10, 3, 11, 4, 12, 5, 13, 6, 14, 7, 15], 20, false);
+		animation.add("hurt", [8, 9, 10, 11, 8, 9, 10, 11, 8, 9, 10, 11], 30, false);
 		mTimer = new FlxTimer().start(6, move, 0);
 		bTimer = new FlxTimer().start(4, fire, 0);
 		move();
