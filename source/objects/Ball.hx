@@ -97,7 +97,6 @@ class Ball extends FlxSprite
 		}
 		if (y <= 4) 
 		{
-			PlayState.instance.red ? PlayState.instance.red = false : PlayState.instance.red = true;
 			velocity.y = -velocity.y * 1.01;
 			bounce();
 		}
@@ -120,6 +119,7 @@ class Ball extends FlxSprite
 	function bounceOffShip(b:Ball, p:FlxObject):Void
 	{
 		bounce();
+		PlayState.instance.red ? PlayState.instance.red = false : PlayState.instance.red = true;
 		PlayState.instance.score.volley();
 		//PlayState.instance.score.score += 150;
 		

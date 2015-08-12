@@ -24,7 +24,7 @@ class ShipBullet extends FlxSprite
 		velocity.set(V.x, V.y);
 		
 		PlayState.instance.shipBullets.add(this);
-		var e = new Explode(P, true);
+		var e = new Explode(P, false);
 	}
 	
 	override public function update(elapsed:Float):Void 

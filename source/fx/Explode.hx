@@ -10,7 +10,7 @@ import states.PlayState;
 class Explode extends FlxSprite
 {
 
-	public function new(P:FlxPoint, E:Bool = true, VY:Int = 10) 
+	public function new(P:FlxPoint, E:Bool = true, VY:Int = 10, S:Float = 1) 
 	{
 		super(P.x, P.y);
 		loadGraphic("assets/images/explode.png", true, 15, 15);
@@ -20,6 +20,7 @@ class Explode extends FlxSprite
 		E ? animation.play("explode") : animation.play("puff");
 		PlayState.instance.explosions.add(this);
 		velocity.y = VY;
+		scale.set(S, S);
 		//angle = Math.random() * 360;
 	}
 	

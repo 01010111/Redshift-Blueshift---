@@ -19,11 +19,11 @@ class MissilePod extends FlxSprite
 	{
 		super(32 + Math.random() * FlxG.width - 64, -48);
 		loadGraphic("assets/images/missilePod.png", true, 32, 32);
-		animation.add("play", [0, 1], 5);
+		animation.add("play", [0, 1], ZMath.randomRangeInt(5, 10));
 		animation.play("play");
 		setSize(8, 8);
 		offset.set(12, 12);
-		FlxTween.tween(this, { y: ZMath.randomRange(32,64), x: ZMath.randomRange(32, FlxG.width - 64) }, 4, { ease:FlxEase.backOut } ).onComplete = function(t:FlxTween):Void
+		FlxTween.tween(this, { y: ZMath.randomRange(32, 64), x: ZMath.randomRange(32, FlxG.width - 64) }, ZMath.randomRange(2.5, 5), { ease:FlxEase.backOut } ).onComplete = function(t:FlxTween):Void
 		{
 			if (alive) release();
 		}
@@ -45,13 +45,20 @@ class MissilePod extends FlxSprite
 	
 	function release():Void
 	{
-		var m = getMidpoint();
-		var e = new Explode(FlxPoint.get(m.x, m.y));
-		var e = new Explode(FlxPoint.get(m.x - 8, m.y - 8));
-		var e = new Explode(FlxPoint.get(m.x + 8, m.y - 8));
-		var e = new Explode(FlxPoint.get(m.x - 8, m.y + 8));
-		var e = new Explode(FlxPoint.get(m.x + 8, m.y + 8));
-		super.kill();
+		if (alive)
+		{
+			var m = getMidpoint();
+			var e = new Explode(FlxPoint.get(m.x - 8, m.y - 8));
+			var e = new Explode(FlxPoint.get(m.x + 8, m.y - 8));
+			var e = new Explode(FlxPoint.get(m.x - 8, m.y + 8));
+			var e = new Explode(FlxPoint.get(m.x + 8, m.y + 8));
+			var e = new Explode(FlxPoint.get(m.x, m.y));
+			var m = new Missile(FlxPoint.get(m.x - 8, m.y - 8), FlxPoint.get(-40, -40));
+			var m = new Missile(FlxPoint.get(m.x + 8, m.y - 8), FlxPoint.get(40, -40));
+			var m = new Missile(FlxPoint.get(m.x - 8, m.y + 8), FlxPoint.get(-40, 40));
+			var m = new Missile(FlxPoint.get(m.x + 8, m.y + 8), FlxPoint.get(40, 40));
+			super.kill();
+		}
 	}
 	
 }

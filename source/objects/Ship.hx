@@ -86,6 +86,7 @@ class Ship extends FlxSprite
 	function move():Void
 	{
 		animation.frameIndex == 4 || animation.frameIndex == 24 ? maxVelocity.set(maxSpeed, maxSpeed * 0.75) : maxVelocity.set(minSpeed, minSpeed * 0.75);
+		if (Reg.c.pressed(Controls.BTN_B)) maxVelocity.set(50, 50);
 		var p = FlxPoint.get();
 		if (Reg.c.pressed(Controls.BTN_LEFT)) p.x--;
 		if (Reg.c.pressed(Controls.BTN_RIGHT)) p.x++;

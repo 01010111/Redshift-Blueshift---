@@ -87,7 +87,6 @@ class Drone extends FlxSprite
 	
 	function crissCross():Void
 	{
-		var m = PlayState.instance.ship.getMidpoint();
 		var a = 0.0;
 		for (i in 0...4)
 		{
@@ -97,6 +96,7 @@ class Drone extends FlxSprite
 				var b2 = new DroneBullet(getMidpoint(), ZMath.velocityFromAngle(a + 180, 150), FlxPoint.get());
 				new FlxTimer().start(1).onComplete = function(t:FlxTimer):Void
 				{
+					var m = PlayState.instance.ship.getMidpoint();
 					var a1 = ZMath.velocityFromAngle(ZMath.angleBetween(b1.getMidpoint().x, b1.getMidpoint().y, m.x, m.y), 300);
 					b1.acceleration.set(a1.x, a1.y);
 					var a2 = ZMath.velocityFromAngle(ZMath.angleBetween(b2.getMidpoint().x, b2.getMidpoint().y, m.x, m.y), 300);

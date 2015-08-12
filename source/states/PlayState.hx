@@ -1,5 +1,6 @@
 package states;
 
+import flixel.addons.effects.FlxTrailArea;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
@@ -31,12 +32,14 @@ class PlayState extends RState
 	public var shipBullets:FlxGroup;
 	public var enemies:FlxGroup;
 	public var enemyBullets:FlxGroup;
+	public var enemyMissiles:FlxGroup;
 	public var weaponUI:Weapons;
 	public var score:ScoreManager;
 	public var red:Bool = true;
 	public var ship:Ship;
 	public var readyForEnemy:Bool = true;
 	public var ball:Ball;
+	public var missileTrails:FlxTrailArea;
 	
 	public static var instance:PlayState;
 	
@@ -65,12 +68,17 @@ class PlayState extends RState
 	
 	function addGroups():Void
 	{
+		missileTrails = new FlxTrailArea(0, 0, 0, 0, 0.75, 3);
+		missileTrails.offset.set(6, 6);
+		add(missileTrails);
 		fx = new FlxGroup();
 		add(fx);
 		shipBullets = new FlxGroup();
 		add(shipBullets);
 		enemies = new FlxGroup();
 		add(enemies);
+		enemyMissiles = new FlxGroup();
+		add(enemyMissiles);
 		enemyBullets = new FlxGroup();
 		ship = new Ship();
 		add(enemyBullets);
@@ -176,7 +184,9 @@ class PlayState extends RState
 	{
 		red ? uiBg.animation.frameIndex = 0 : uiBg.animation.frameIndex = 1;
 		FlxG.overlap(enemyBullets, ship, bulletHitShip);
+		FlxG.overlap(enemyMissiles, ship, bulletHitShip);
 		FlxG.overlap(shipBullets, enemies, bulletHitEnemy);
+		FlxG.overlap(shipBullets, enemyMissiles, bulletHitEnemy);
 		FlxG.overlap(ball, enemies, ballHitEnemy);
 		super.update(elapsed);
 		if (FlxG.keys.justPressed.R) FlxG.switchState(new PlayState());
